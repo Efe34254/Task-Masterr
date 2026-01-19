@@ -370,3 +370,27 @@ label {
     top: 0;
     z-index: 3000;
 }
+
+#profile-modal {
+    z-index: 10000 !important; 
+    align-items: center; 
+    padding-bottom: 0; 
+}
+
+#profile-modal > div {
+    position: relative;
+    bottom: 50px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
+    max-height: 80vh; 
+    overflow-y: auto; 
+}
+
+.view-overlay {
+    z-index: 9000 !important; 
+    padding-bottom: 120px !important; 
+}
+
+
+.bottom-nav {
+    z-index: 1000 !important;
+}
