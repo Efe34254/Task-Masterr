@@ -2,29 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#5b4dff">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4f46e5">
     <title>Task Master Pro</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Global Offline Indicator -->
-    <div id="offline-indicator" class="offline-banner">
-        <i class="fas fa-wifi-slash"></i> You are currently offline. Tasks will sync when back online.
+    <div id="offline-indicator" class="offline-banner" style="display:none;">
+        <i class="fas fa-wifi-slash"></i> Offline Mode
     </div>
 
-    <!-- Dashboard View -->
     <section id="view-dashboard" class="view active">
         <div class="header">
             <div class="user-greeting">
-                <div class="avatar-small" id="dash-avatar">JD</div>
-                <div>
-                    <h1 id="dash-welcome">Hello, Jane!</h1>
-                    <p id="dash-date">Monday, Jan 1</p>
-                </div>
+                <p id="dash-date">Welcome back,</p>
+                <h1 id="dash-welcome">Hello, Jane!</h1>
             </div>
+            <div class="avatar-small" id="dash-avatar">JD</div>
         </div>
         
         <div class="stats-grid">
@@ -38,9 +34,6 @@
             </div>
         </div>
 
-        <div class="section-header">
-            <h3>Quick Actions</h3>
-        </div>
         <button id="btn-add-quick" class="primary-btn-lg">
             <i class="fas fa-plus"></i> Create New Task
         </button>
@@ -52,97 +45,91 @@
         <div id="recent-tasks-container"></div>
     </section>
 
-    <!-- Tasks View -->
     <section id="view-tasks" class="view">
         <div class="header">
             <h1>My Tasks</h1>
-            <p>Organize your daily workflow</p>
         </div>
 
         <div class="tabs">
             <button class="tab active" data-filter="all">All</button>
             <button class="tab" data-filter="pending">Pending</button>
-            <button class="tab" data-filter="completed">Completed</button>
-            <button class="tab" data-filter="High">High</button>
+            <button class="tab" data-filter="completed">Done</button>
+            <button class="tab" data-filter="High">Priority</button>
         </div>
 
         <div id="task-list-container"></div>
     </section>
 
-    <!-- Settings View -->
     <section id="view-settings" class="view">
         <div class="header">
-            <h2>Settings</h2>
-            <p>Personalize your experience</p>
+            <h1>Settings</h1>
         </div>
 
-        <div class="card profile-card" id="edit-profile-trigger">
-            <div class="avatar" id="settings-avatar">JD</div>
-            <div class="info">
+        <div class="task-item" id="edit-profile-trigger" style="cursor: pointer; align-items: center;">
+            <div class="avatar-small" id="settings-avatar">JD</div>
+            <div class="task-content">
                 <h4 id="settings-name">Jane Doe</h4>
-                <p id="settings-email">jane.doe@example.com</p>
+                <p id="settings-email" style="margin:0;">jane.doe@example.com</p>
             </div>
-            <i class="fas fa-edit"></i>
+            <i class="fas fa-chevron-right" style="color:var(--text-muted)"></i>
         </div>
 
-        <label class="section-label">App Preferences</label>
-        
-        <div class="card toggle-card">
-            <div class="icon-box purple"><i class="fas fa-moon"></i></div>
-            <div class="text">Dark Mode</div>
-            <label class="switch">
-                <input type="checkbox" id="toggle-dark">
-                <span class="slider round"></span>
-            </label>
-        </div>
-
-        <div class="card toggle-card">
-            <div class="icon-box pink"><i class="fas fa-bell"></i></div>
-            <div class="text">
-                Notifications
-                <span class="sub">Daily reminders & updates</span>
+        <div style="margin-top: 24px;">
+            <label>Preferences</label>
+            
+            <div class="task-item" style="align-items: center; justify-content: space-between;">
+                <div class="row" style="align-items: center;">
+                    <i class="fas fa-moon" style="color:var(--primary)"></i>
+                    <span>Dark Mode</span>
+                </div>
+                <input type="checkbox" id="toggle-dark" style="width:auto; margin:0;">
             </div>
-            <label class="switch">
-                <input type="checkbox" id="toggle-notif">
-                <span class="slider round"></span>
-            </label>
+
+            <div class="task-item" style="align-items: center; justify-content: space-between;">
+                <div class="row" style="align-items: center;">
+                    <i class="fas fa-bell" style="color:var(--secondary)"></i>
+                    <span>Notifications</span>
+                </div>
+                <input type="checkbox" id="toggle-notif" style="width:auto; margin:0;">
+            </div>
         </div>
 
-        <div class="offline-status">
-            <p id="connection-status">You are Online</p>
+        <div class="offline-status" style="margin: 20px 0; text-align: center;">
+            <p id="connection-status">Checking connection...</p>
         </div>
         
-        <div class="card" id="copy-userid">
-            <div class="icon-box purple"><i class="fas fa-copy"></i></div>
-            <div class="text">
-                Sync ID
-                <span class="sub" id="display-userid">Loading...</span>
+        <div class="task-item" id="copy-userid" style="cursor: pointer;">
+             <div class="task-content">
+                <h4>Sync ID</h4>
+                <p id="display-userid" style="font-family: monospace;">Loading...</p>
             </div>
-            <i class="fas fa-chevron-right"></i>
+            <i class="fas fa-copy" style="color:var(--primary)"></i>
         </div>
-        <button class="logout-btn" id="btn-reset">Reset All Data</button>
-        <p class="version">Version 3.0.0 (Pro)</p>
+
+        <button class="primary-btn-lg" id="btn-reset" style="background: var(--danger); margin-top: 20px;">
+            Reset App Data
+        </button>
+        
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 20px;">v3.0.0 Clean Edition</p>
     </section>
 
-    <!-- Add Task View (Overlay) -->
     <section id="view-add" class="view-overlay">
         <div class="overlay-content">
-            <div class="header-nav">
-                <button class="icon-btn close-overlay"><i class="fas fa-times"></i></button>
+            <div class="header">
                 <h2>New Task</h2>
-                <div></div>
+                <button class="text-link close-overlay" style="font-size: 1.5rem;">&times;</button>
             </div>
 
             <form id="add-task-form">
-                <label>Title</label>
-                <input type="text" id="task-title" placeholder="What needs to be done?" required>
+                <label>Task Title</label>
+                <input type="text" id="task-title" placeholder="e.g. Buy milk" required>
 
-                <label>Description</label>
-                <textarea id="task-desc" placeholder="Add details about this task..."></textarea>
+                <label>Description (Optional)</label>
+                <textarea id="task-desc" rows="3" placeholder="Add details..."></textarea>
 
                 <div class="row">
                     <div class="col">
-                        <label>Due Date</label>
+                        <label>Date</label>
                         <input type="date" id="task-date">
                     </div>
                     <div class="col">
@@ -150,66 +137,68 @@
                         <input type="time" id="task-time">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <label>Priority</label>
-                        <select id="task-priority">
-                            <option value="Low">Low</option>
-                            <option value="Medium" selected>Medium</option>
-                            <option value="High">High</option>
-                        </select>
-                    </div>
+
+                <label>Priority</label>
+                <select id="task-priority">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                </select>
+
+                <div style="margin: 20px 0;">
+                    <button type="button" id="btn-get-location" class="text-link" style="display: flex; gap: 8px; align-items: center;">
+                        <i class="fas fa-map-marker-alt"></i> Add Location
+                    </button>
+                    <p id="location-display" style="font-size: 0.8rem; margin-top: 5px; color: var(--text-muted);"></p>
                 </div>
 
-                <label>Location</label>
-                <button type="button" id="btn-get-location" class="secondary-btn">
-                    <i class="fas fa-map-marker-alt"></i> Tag Location
-                </button>
-                <p id="location-display" class="small-text"></p>
-
-                <button type="submit" class="primary-btn-lg">
-                    <i class="fas fa-check"></i> Save Task
-                </button>
+                <button type="submit" class="primary-btn-lg">Save Task</button>
             </form>
         </div>
     </section>
 
-    <!-- Profile Edit Modal -->
-    <div id="profile-modal" class="modal">
-        <div class="modal-content">
-            <h3>Edit Profile</h3>
-            <label>Full Name</label>
-            <input type="text" id="edit-name" placeholder="Your Name">
+    <div id="profile-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:4000; align-items:center; justify-content:center;">
+        <div style="background:var(--bg-card); padding:24px; border-radius:12px; width:90%; max-width:400px;">
+            <h3 style="margin-bottom:16px;">Edit Profile</h3>
+            <label>Name</label>
+            <input type="text" id="edit-name">
             <label>Email</label>
-            <input type="email" id="edit-email" placeholder="Your Email">
-            <div class="modal-actions">
-                <button class="secondary-btn" id="close-modal">Cancel</button>
-                <button class="primary-btn" id="save-profile">Save Changes</button>
+            <input type="email" id="edit-email">
+            <div class="row" style="margin-top:16px;">
+                <button id="close-modal" class="text-link col" style="color:var(--text-muted)">Cancel</button>
+                <button id="save-profile" class="primary-btn-lg col" style="margin:0; padding: 10px;">Save</button>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <button class="nav-item active" data-target="view-dashboard">
             <i class="fas fa-home"></i>
             <span>Home</span>
         </button>
         <button class="nav-item" data-target="view-tasks">
-            <i class="fas fa-list-ul"></i>
+            <i class="fas fa-check-circle"></i>
             <span>Tasks</span>
         </button>
         <button class="nav-item" data-target="view-settings">
-            <i class="fas fa-user-cog"></i>
+            <i class="fas fa-cog"></i>
             <span>Settings</span>
         </button>
     </nav>
 
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    
     <script src="app.js"></script>
+    <script>
+        // Modal logic için ufak bir inline düzeltme (CSS class yerine style manipülasyonu gerekebilir)
+        const modal = document.getElementById('profile-modal');
+        document.getElementById('edit-profile-trigger').addEventListener('click', () => modal.style.display = 'flex');
+        document.getElementById('close-modal').addEventListener('click', () => modal.style.display = 'none');
+        document.getElementById('save-profile').addEventListener('click', () => {
+             // Logic app.js içinde olduğu için sadece kapatıyoruz, app.js event listener'ı işi yapacak
+             setTimeout(() => modal.style.display = 'none', 100);
+        });
+    </script>
 </body>
 </html>
