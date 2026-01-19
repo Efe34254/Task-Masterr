@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#5b4dff">
+    <title>Task Master Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Global Offline Indicator -->
+    <div id="offline-indicator" class="offline-banner">
+        <i class="fas fa-wifi-slash"></i> You are currently offline. Tasks will sync when back online.
+    </div>
+
+    <!-- Dashboard View -->
+    <section id="view-dashboard" class="view active">
+        <div class="header">
+            <div class="user-greeting">
+                <div class="avatar-small" id="dash-avatar">JD</div>
+                <div>
+                    <h1 id="dash-welcome">Hello, Jane!</h1>
+                    <p id="dash-date">Monday, Jan 1</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-num" id="stat-total">0</span>
+                <span class="stat-label">Total Tasks</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num" id="stat-pending">0</span>
+                <span class="stat-label">Pending</span>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h3>Quick Actions</h3>
+        </div>
+        <button id="btn-add-quick" class="primary-btn-lg">
+            <i class="fas fa-plus"></i> Create New Task
+        </button>
+
+        <div class="section-header">
+            <h3>Recent Tasks</h3>
+            <button class="text-link" id="view-all-link">View All</button>
+        </div>
+        <div id="recent-tasks-container"></div>
+    </section>
+
+    <!-- Tasks View -->
+    <section id="view-tasks" class="view">
+        <div class="header">
+            <h1>My Tasks</h1>
+            <p>Organize your daily workflow</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-filter="all">All</button>
+            <button class="tab" data-filter="pending">Pending</button>
+            <button class="tab" data-filter="completed">Completed</button>
+            <button class="tab" data-filter="High">High</button>
+        </div>
+
+        <div id="task-list-container"></div>
+    </section>
+
+    <!-- Settings View -->
+    <section id="view-settings" class="view">
+        <div class="header">
+            <h2>Settings</h2>
+            <p>Personalize your experience</p>
+        </div>
+
+        <div class="card profile-card" id="edit-profile-trigger">
+            <div class="avatar" id="settings-avatar">JD</div>
+            <div class="info">
+                <h4 id="settings-name">Jane Doe</h4>
+                <p id="settings-email">jane.doe@example.com</p>
+            </div>
+            <i class="fas fa-edit"></i>
+        </div>
+
+        <label class="section-label">App Preferences</label>
+        
+        <div class="card toggle-card">
+            <div class="icon-box purple"><i class="fas fa-moon"></i></div>
+            <div class="text">Dark Mode</div>
+            <label class="switch">
+                <input type="checkbox" id="toggle-dark">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="card toggle-card">
+            <div class="icon-box pink"><i class="fas fa-bell"></i></div>
+            <div class="text">
+                Notifications
+                <span class="sub">Daily reminders & updates</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="toggle-notif">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="offline-status">
+            <p id="connection-status">You are Online</p>
+        </div>
+        
+        <div class="card" id="copy-userid">
+            <div class="icon-box purple"><i class="fas fa-copy"></i></div>
+            <div class="text">
+                Sync ID
+                <span class="sub" id="display-userid">Loading...</span>
+            </div>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <button class="logout-btn" id="btn-reset">Reset All Data</button>
+        <p class="version">Version 3.0.0 (Pro)</p>
+    </section>
+
+    <!-- Add Task View (Overlay) -->
+    <section id="view-add" class="view-overlay">
+        <div class="overlay-content">
+            <div class="header-nav">
+                <button class="icon-btn close-overlay"><i class="fas fa-times"></i></button>
+                <h2>New Task</h2>
+                <div></div>
+            </div>
+
+            <form id="add-task-form">
+                <label>Title</label>
+                <input type="text" id="task-title" placeholder="What needs to be done?" required>
+
+                <label>Description</label>
+                <textarea id="task-desc" placeholder="Add details about this task..."></textarea>
+
+                <div class="row">
+                    <div class="col">
+                        <label>Due Date</label>
+                        <input type="date" id="task-date">
+                    </div>
+                    <div class="col">
+                        <label>Time</label>
+                        <input type="time" id="task-time">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label>Priority</label>
+                        <select id="task-priority">
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label>Location</label>
+                <button type="button" id="btn-get-location" class="secondary-btn">
+                    <i class="fas fa-map-marker-alt"></i> Tag Location
+                </button>
+                <p id="location-display" class="small-text"></p>
+
+                <button type="submit" class="primary-btn-lg">
+                    <i class="fas fa-check"></i> Save Task
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Profile Edit Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <h3>Edit Profile</h3>
+            <label>Full Name</label>
+            <input type="text" id="edit-name" placeholder="Your Name">
+            <label>Email</label>
+            <input type="email" id="edit-email" placeholder="Your Email">
+            <div class="modal-actions">
+                <button class="secondary-btn" id="close-modal">Cancel</button>
+                <button class="primary-btn" id="save-profile">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-target="view-dashboard">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </button>
+        <button class="nav-item" data-target="view-tasks">
+            <i class="fas fa-list-ul"></i>
+            <span>Tasks</span>
+        </button>
+        <button class="nav-item" data-target="view-settings">
+            <i class="fas fa-user-cog"></i>
+            <span>Settings</span>
+        </button>
+    </nav>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <script src="app.js"></script>
+</body>
+</html>
