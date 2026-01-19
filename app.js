@@ -296,19 +296,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function checkReminders() {
-        const now = new Date();
-        const todayStr = now.toISOString().split('T')[0];
-        const timeStr = now.toTimeString().slice(0, 5);
+    // app.js dosyasında "checkReminders" fonksiyonunu bununla değiştirin:
 
-        tasks.forEach(task => {
-            if (!task.completed && !task.notified && task.date === todayStr && task.time === timeStr) {
-                triggerNotification("Task Reminder! ⏰", task.title);
-                task.notified = true;
-                saveTask(task, false);
-            }
-        });
-    }
+function checkReminders() {
+    const now = new Date();
+    
+    // YEREL saati alıyoruz (UTC yerine)
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const todayStr = `${year}-${month}-${day}`; // Örn: "2023-10-27"
+
+    // Saat ve dakikayı al (saniyeyi yoksay)
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const timeStr = `${hours}:${minutes}`;
+
+    tasks.forEach(task => {
+        // Görev tamamlanmamışsa, henüz bildirim gitmemişse ve zamanı geldiyse
+        if (!task.completed && !task.notified && task.date === todayStr && task.time === timeStr) {
+            triggerNotification("Hatırlatıcı! ⏰", task.title);
+            
+            // Tekrar tekrar çalmaması için işaretle
+            task.notified = true; 
+            saveTask(task, false); // Durumu kaydet
+        }
+    });
+}
 
     setInterval(checkReminders, 10000);
 
